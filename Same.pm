@@ -2,7 +2,7 @@ package File::Same;
 
 use strict;
 use vars qw/$VERSION/;
-$VERSION = '0.01';
+$VERSION = '0.02';
 
 use Digest::MD5;
 use File::Spec;
@@ -18,8 +18,10 @@ sub scan_files {
     if (!$orig_md5) {
         my $ctx = Digest::MD5->new();
         open(FILE, $original) || die "Cannot open '$original' : $!";
+        binmode(FILE);
         $ctx->addfile(*FILE);
         $orig_md5 = $ctx->hexdigest;
+        close(FILE);
     }
     
     foreach my $file (@$files) {
@@ -31,14 +33,24 @@ sub scan_files {
         else {
             my $ctx = Digest::MD5->new();
             open(FILE, $file) || die "Cannot open '$file' : $!";
+            binmode(FILE);
             $ctx->addfile(*FILE);
             if ($orig_md5 eq $ctx->hexdigest) {
                 push @results, $file;
             }
+            close(FILE);
         }
     }
 
-    return grep {$_ ne $original} @results;
+    return grep {_not_same($_, $original)} @results;
+}
+
+sub _not_same {
+    my ($file, $orig) = @_;
+    if (File::Spec->rel2abs($file) eq File::Spec->rel2abs($orig)) {
+        return 0;
+    }
+    return 1;
 }
 
 sub scan_dir {
@@ -78,7 +90,7 @@ File::Same - Detect which files are the same as a given one
   or
   my @same = File::Same::scan_files($original, [@list]);
 
-      or
+  or
   my @same = File::Same::scan_dir($original, 'somedir');
 
 =head1 DESCRIPTION

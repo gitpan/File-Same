@@ -1,5 +1,9 @@
 Revision history for Perl extension File::Same.
 
+0.02  Tue Nov 06 2001
+	- binmode() for Win32
+        - Forgot to close filehandles (oops!)
+
 0.01  Mon Oct 29 14:51:37 2001
 	- original version; created by h2xs 1.21 with options
 		-A -X -n File::Same

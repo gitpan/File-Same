@@ -1,0 +1,35 @@
+File::Same
+==========
+
+File::Same allows you to compare a whole bunch of files (or directories
+full of files) for "sameness".
+
+Essentially this was written to detect which files in a multitude
+of directories are the same, and allow us to do further processing
+on those files.
+
+INSTALLATION
+
+To install this module type the following:
+
+   perl Makefile.PL
+   make
+   make test
+   make install
+
+Replace make for nmake on Win32.
+
+DEPENDENCIES
+
+This module requires these other modules and libraries:
+
+  Digest::MD5
+  File::Spec (included with core perl)
+
+COPYRIGHT AND LICENCE
+
+Copyright (C) 2001 MessageLabs Limited.
+
+This is free software, you may use it and distribute it under the
+same terms as Perl itself.
+
